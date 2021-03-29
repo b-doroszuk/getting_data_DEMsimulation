@@ -4,17 +4,17 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.lines as mlines
-import matplotlib;
-
-matplotlib.use("TkAgg")
+import matplotlib; matplotlib.use("TkAgg")
 
 
 class Get_DEM_data():
 
-    def __init__(self, enter_time_step=6002, rock_number=0, is_save=False, is_draw=True, out_number=1):
+    def __init__(self, enter_time_step=102, rock_number=0, is_save=False, is_draw=True, out_number=1):
         # "D:\Polkowice\Kruszarka_Polkowice.dem"
         # "RockBox_Example.dem"
-        self.deck = Deck("D:\Polkowice\Kruszarka_Polkowice.dem")
+        #"C:\\Users\\Jakub\\PycharmProjects\\test2\\testownik11_prof_Robert_Krol\\projekt_2\\rock_example\\RockBox_Example.dem"
+        t = "C:\\Users\\Jakub\\PycharmProjects\\test2\\testownik11_prof_Robert_Krol\\projekt_2\\POLKOWICE_etap_2\\simulation_0\\simulation_0.dem"
+        self.deck = Deck(t)
         self.time_step = enter_time_step
         self.rock_number = rock_number
 
@@ -55,8 +55,10 @@ class Get_DEM_data():
 
         # dol_d = dol_diameter + lup_diameter + pia_diameter
         dol_d = list(self.get_diameter)
+        print(dol_d)
         # dol_m = dol_mass + lup_mass + pia_mass
         dol_m = list(self.get_mass)
+        print(dol_m)
 
         dummy_sum = sum(self.get_dummy_mass)  # 0.00001 #float(dummy[1]) + float(dummy[2]) + float(dummy[3])
         sum_dol_dum = sum(dol_m) + dummy_sum
@@ -337,10 +339,11 @@ class Get_DEM_data():
         if self.is_draw:
             plt.show()
         if self.is_save:
-            plt.savefig(f"wychod{self.out_number}__{time.strftime('%m_%d_%Y-%H_%M_%S')}.png")
+            plt.savefig(f"wychod{self.out_number}__{time.strftime('%m_%d_%Y-%H_%M_%S')}__{self.time_step}.png")
 
 def main(args):
     """main function"""
+
     test = Get_DEM_data()
     print(test.get_number_all_time_steps)
 
