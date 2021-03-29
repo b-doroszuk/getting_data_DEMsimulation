@@ -53,7 +53,7 @@ class Get_DEM_data():
         fig = plt.figure(figsize=(7, 6))
         axes = fig.add_axes([0.1, 0.1, 0.8, 0.8])
 
-        dol_m, dol_d = ring_polkowice.ring_bin(time_step=self.time_step)
+        dol_m, dol_d = ring_polkowice.ring_bin_dolomit(time_step=self.time_step, deck_name=self.t)
         #dol_m = list(dol_m)
         #dol_d = list(dol_d)
         # dol_d = dol_diameter + lup_diameter + pia_diameter
