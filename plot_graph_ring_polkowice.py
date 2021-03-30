@@ -21,7 +21,7 @@ class Get_DEM_data():
         self.out_number = out_number
         self.is_save = is_save
         self.is_draw = is_draw
-
+        s
     @property
     def get_ids_set(self):
         """getting ID particle"""
@@ -49,7 +49,7 @@ class Get_DEM_data():
         """getting rock name"""
         return self.deck.creatorData.particle[number].getName()
 
-    def draw_plot(self):
+    def draw_plot(self, section_1=5, section_2=10, section_3=15, section_4=20, section_5=40, section_6=80):
         fig = plt.figure(figsize=(7, 6))
         axes = fig.add_axes([0.1, 0.1, 0.8, 0.8])
 
@@ -72,15 +72,15 @@ class Get_DEM_data():
 
         dol_dd = [[], [], [], [], [], []]
         for i in dol_d:
-            if i <= 5:
+            if i <= section_1:
                 dol_dd[0].append(i)
-            elif i <= 10:
+            elif i <= section_2:
                 dol_dd[1].append(i)
-            elif i <= 15:
+            elif i <= section_3:
                 dol_dd[2].append(i)
-            elif i <= 20:
+            elif i <= section_4:
                 dol_dd[3].append(i)
-            elif i <= 40:
+            elif i <= section_5:
                 dol_dd[4].append(i)
             else:
                 dol_dd[5].append(i)
@@ -214,7 +214,7 @@ class Get_DEM_data():
 
         """POINTS"""
         if dol_dm[4] and dol_dm[5]:
-            tab_1 = [0, 5, 10, 15, 20, 40, 80]
+            tab_1 = [0, section_1, section_2, section_3, section_4, section_5, section_6]
             tab_2 = [0, one * 100, two * 100, three * 100, four * 100, five * 100, six * 100]
             if dol_d[count_1] > tab_1[5]:
                 axes.plot([dol_d[count_1], tab_1[6]], [80, tab_2[6]], color='b')
@@ -235,7 +235,7 @@ class Get_DEM_data():
             print(Points)
 
         elif dol_dm[4] and not dol_dm[5]:
-            tab_1 = [0, 5, 10, 15, 20, 40]
+            tab_1 = [0, section_1, section_2, section_3, section_4, section_5]
             tab_2 = [0, one * 100, two * 100, three * 100, four * 100, five * 100]
             if dol_d[count_1] > tab_1[4]:
                 axes.plot([dol_d[count_1], tab_1[5]], [80, tab_2[5]], color='b')
@@ -250,7 +250,7 @@ class Get_DEM_data():
             Points.sort(key=lambda x: x[1])
 
         else:
-            tab_1 = [0, 5, 10, 15, 20]
+            tab_1 = [0, section_1, section_2, section_3, section_4]
             tab_2 = [0, one * 100, two * 100, three * 100, four * 100]
             if dol_d[count_1] > tab_1[3]:
                 axes.plot([dol_d[count_1], tab_1[4]], [80, tab_2[4]], color='b')
