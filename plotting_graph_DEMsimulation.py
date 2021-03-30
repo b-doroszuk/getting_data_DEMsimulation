@@ -178,14 +178,15 @@ class Get_DEM_data():
         s_value_2 = 0
         for i in dol_m:
             if s_value_2 <= f_2:
-
+                if dol_dd[0]:
                     if count_2 <= len(dol_dd[0]):
                         s_value_2 += (i + (dummy_sum / len(dol_dd[0])))
                         count_2 += 1
                     else:
                         s_value_2 += i
                         count_2 += 1
-
+                else:
+                    break
             else:
                 break
         # axes.plot(dol_d[count_2], 50, 'o', color='k')
