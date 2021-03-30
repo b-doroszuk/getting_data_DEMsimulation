@@ -4,15 +4,17 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.lines as mlines
-import matplotlib; matplotlib.use("TkAgg")
+import matplotlib;
+
+matplotlib.use("TkAgg")
 
 
 class Get_DEM_data():
 
-    def __init__(self, enter_time_step=102, rock_number=0, is_save=False, is_draw=True, out_number=1):
+    def __init__(self, enter_time_step=90, rock_number=0, is_save=False, is_draw=True, out_number=1):
         # "D:\Polkowice\Kruszarka_Polkowice.dem"
         # "RockBox_Example.dem"
-        #"C:\\Users\\Jakub\\PycharmProjects\\test2\\testownik11_prof_Robert_Krol\\projekt_2\\rock_example\\RockBox_Example.dem"
+        # "C:\\Users\\Jakub\\PycharmProjects\\test2\\testownik11_prof_Robert_Krol\\projekt_2\\rock_example\\RockBox_Example.dem"
         t = "C:\\Users\\Jakub\\PycharmProjects\\test2\\testownik11_prof_Robert_Krol\\projekt_2\\POLKOWICE_etap_2\\simulation_0\\simulation_0.dem"
         self.deck = Deck(t)
         self.time_step = enter_time_step
@@ -49,18 +51,26 @@ class Get_DEM_data():
         """getting rock name"""
         return self.deck.creatorData.particle[number].getName()
 
-    def draw_plot(self):
+    def draw_plot(self, section_1=5, section_2=10, section_3=15, section_4=20, section_5=40, section_6=80):
+        """
+        section_1 = 4
+        section_2 = 5
+        section_3 = 10
+        section_4 = 50
+        section_5 = 100
+        section_6 = 300
+        """
         fig = plt.figure(figsize=(7, 6))
         axes = fig.add_axes([0.1, 0.1, 0.8, 0.8])
 
         # dol_d = dol_diameter + lup_diameter + pia_diameter
         dol_d = list(self.get_diameter)
-        print(dol_d)
+        #print(dol_d)
         # dol_m = dol_mass + lup_mass + pia_mass
         dol_m = list(self.get_mass)
-        print(dol_m)
+        #print(dol_m)
 
-        dummy_sum = sum(self.get_dummy_mass)  # 0.00001 #float(dummy[1]) + float(dummy[2]) + float(dummy[3])
+        dummy_sum = 0.00000001  # sum(self.get_dummy_mass)  #  #float(dummy[1]) + float(dummy[2]) + float(dummy[3])
         sum_dol_dum = sum(dol_m) + dummy_sum
         print(sum_dol_dum)
 
@@ -69,15 +79,15 @@ class Get_DEM_data():
 
         dol_dd = [[], [], [], [], [], []]
         for i in dol_d:
-            if i <= 5:
+            if i <= section_1:
                 dol_dd[0].append(i)
-            elif i <= 10:
+            elif i <= section_2:
                 dol_dd[1].append(i)
-            elif i <= 15:
+            elif i <= section_3:
                 dol_dd[2].append(i)
-            elif i <= 20:
+            elif i <= section_4:
                 dol_dd[3].append(i)
-            elif i <= 40:
+            elif i <= section_5:
                 dol_dd[4].append(i)
             else:
                 dol_dd[5].append(i)
@@ -211,7 +221,7 @@ class Get_DEM_data():
 
         """POINTS"""
         if dol_dm[4] and dol_dm[5]:
-            tab_1 = [0, 5, 10, 15, 20, 40, 80]
+            tab_1 = [0, section_1, section_2, section_3, section_4, section_5, section_6]
             tab_2 = [0, one * 100, two * 100, three * 100, four * 100, five * 100, six * 100]
             if dol_d[count_1] > tab_1[5]:
                 axes.plot([dol_d[count_1], tab_1[6]], [80, tab_2[6]], color='b')
@@ -232,7 +242,7 @@ class Get_DEM_data():
             print(Points)
 
         elif dol_dm[4] and not dol_dm[5]:
-            tab_1 = [0, 5, 10, 15, 20, 40]
+            tab_1 = [0, section_1, section_2, section_3, section_4, section_5]
             tab_2 = [0, one * 100, two * 100, three * 100, four * 100, five * 100]
             if dol_d[count_1] > tab_1[4]:
                 axes.plot([dol_d[count_1], tab_1[5]], [80, tab_2[5]], color='b')
@@ -247,7 +257,7 @@ class Get_DEM_data():
             Points.sort(key=lambda x: x[1])
 
         else:
-            tab_1 = [0, 5, 10, 15, 20]
+            tab_1 = [0, section_1, section_2, section_3, section_4]
             tab_2 = [0, one * 100, two * 100, three * 100, four * 100]
             if dol_d[count_1] > tab_1[3]:
                 axes.plot([dol_d[count_1], tab_1[4]], [80, tab_2[4]], color='b')
@@ -341,6 +351,7 @@ class Get_DEM_data():
             plt.show()
         if self.is_save:
             plt.savefig(f"wychod{self.out_number}__{time.strftime('%m_%d_%Y-%H_%M_%S')}__{self.time_step}.png")
+
 
 def main(args):
     """main function"""
