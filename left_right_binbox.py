@@ -149,7 +149,7 @@ def maintance_time(binbox_name="left", is_draw=True, is_save=False):
     plt.ylabel('Frequency')
     plt.title(f'Residence Time Histogram where particle in {binbox_name} BinBox')
     if is_save:
-        plt.savefig(f"Resistance_Time_{binbox_name}_BinBox_{strftime('%m_%d_%Y-%H_%M_%S')}.png")
+        plt.savefig(f"Residence_Time_{binbox_name}_BinBox_{strftime('%m_%d_%Y-%H_%M_%S')}.png")
     if is_draw:
         plt.show()
 
