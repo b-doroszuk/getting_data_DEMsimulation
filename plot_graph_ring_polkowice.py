@@ -21,7 +21,7 @@ class Get_DEM_data():
         self.out_number = out_number
         self.is_save = is_save
         self.is_draw = is_draw
-        s
+        
     @property
     def get_ids_set(self):
         """getting ID particle"""
