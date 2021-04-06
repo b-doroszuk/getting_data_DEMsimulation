@@ -21,27 +21,22 @@ class Get_DEM_data():
         self.out_number = out_number
         self.is_save = is_save
         self.is_draw = is_draw
-        
-    @property
+
     def get_ids_set(self):
         """getting ID particle"""
         return self.deck.timestep[self.time_step].particle[self.rock_number].getIdsSet()
 
-    @property
     def get_mass(self):
         """getting mass particles"""
         return self.deck.timestep[self.time_step].particle[self.rock_number].getMass()
 
-    @property
     def get_dummy_mass(self):
         return self.deck.timestep[self.time_step].particle[5].getMass()
 
-    @property
     def get_diameter(self):
         """getting diameters particles in millimeters"""
         return self.deck.timestep[self.time_step].particle[self.rock_number].getSphereRadii() * 2 * 1000
 
-    @property
     def get_number_all_time_steps(self):
         return self.deck.numTimesteps
 
@@ -348,7 +343,7 @@ class Get_DEM_data():
 def main(args):
     """main function"""
 
-    test = Get_DEM_data()
+    test = Get_DEM_data(enter_time_step=220)
     print(test.get_number_all_time_steps)
 
     test.draw_plot()
