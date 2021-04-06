@@ -24,26 +24,24 @@ class Get_DEM_data():
         self.is_save = is_save
         self.is_draw = is_draw
 
-    @property
+
     def get_ids_set(self):
         """getting ID particle"""
         return self.deck.timestep[self.time_step].particle[self.rock_number].getIdsSet()
 
-    @property
+
     def get_mass(self):
         """getting mass particles"""
         return self.deck.timestep[self.time_step].particle[self.rock_number].getMass()
 
-    @property
+
     def get_dummy_mass(self):
         return self.deck.timestep[self.time_step].particle[5].getMass()
 
-    @property
     def get_diameter(self):
         """getting diameters particles in millimeters"""
         return self.deck.timestep[self.time_step].particle[self.rock_number].getSphereRadii() * 2 * 1000
 
-    @property
     def get_number_all_time_steps(self):
         return self.deck.numTimesteps
 
@@ -64,10 +62,10 @@ class Get_DEM_data():
         axes = fig.add_axes([0.1, 0.1, 0.8, 0.8])
 
         # dol_d = dol_diameter + lup_diameter + pia_diameter
-        dol_d = list(self.get_diameter)
+        dol_d = list(self.get_diameter())
         #print(dol_d)
         # dol_m = dol_mass + lup_mass + pia_mass
-        dol_m = list(self.get_mass)
+        dol_m = list(self.get_mass())
         #print(dol_m)
 
         dummy_sum = 0.00000001  # sum(self.get_dummy_mass)  #  #float(dummy[1]) + float(dummy[2]) + float(dummy[3])
@@ -347,10 +345,12 @@ class Get_DEM_data():
         plt.xlabel('górna granica przedzialu')
         plt.ylabel('Σ masa %')
 
-        if self.is_draw:
-            plt.show()
         if self.is_save:
             plt.savefig(f"wychod{self.out_number}__{time.strftime('%m_%d_%Y-%H_%M_%S')}__{self.time_step}.png")
+
+        if self.is_draw:
+            plt.show()
+
 
 
 def main(args):
