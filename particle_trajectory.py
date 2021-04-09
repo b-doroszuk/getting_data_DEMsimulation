@@ -33,7 +33,7 @@ def draw_trajectory(is_lupek=True, is_piaskowiec=True, is_dolomit=True,
         for i in range(0, 5):
             try:
                 for j in deck.timestep[i].particle[0].getIds():
-                    if j not in tab_lupek and (deck.timestep[i].particle[0].getSphereRadii(j) * 2000) > 20:
+                    if j not in tab_lupek and 30 > (deck.timestep[i].particle[0].getSphereRadii(j) * 2000) > 20:
                         tab_lupek.append(j)
             except Exception:
                 continue
@@ -54,7 +54,7 @@ def draw_trajectory(is_lupek=True, is_piaskowiec=True, is_dolomit=True,
         for i in range(0, 5):
             try:
                 for j in deck.timestep[i].particle[1].getIds():
-                    if j not in tab_piaskowiec and (deck.timestep[i].particle[1].getSphereRadii(j) * 2000) > 10:
+                    if j not in tab_piaskowiec and 30 > (deck.timestep[i].particle[1].getSphereRadii(j) * 2000) > 10:
                         tab_piaskowiec.append(j)
             except Exception:
                 continue
@@ -75,7 +75,7 @@ def draw_trajectory(is_lupek=True, is_piaskowiec=True, is_dolomit=True,
         for i in range(0, 5):
             try:
                 for j in deck.timestep[i].particle[2].getIds():
-                    if j not in tab_dolomit and (deck.timestep[i].particle[2].getSphereRadii(j) * 2000) > 10:
+                    if j not in tab_dolomit and 30 > (deck.timestep[i].particle[2].getSphereRadii(j) * 2000) > 10:
                         tab_dolomit.append(j)
             except Exception:
                 continue
@@ -114,4 +114,4 @@ def draw_trajectory(is_lupek=True, is_piaskowiec=True, is_dolomit=True,
 koniec = time.time()
 print("czas: ", koniec - start)
 
-draw_trajectory()
+draw_trajectory(is_save=True, is_draw_geometry=True)
