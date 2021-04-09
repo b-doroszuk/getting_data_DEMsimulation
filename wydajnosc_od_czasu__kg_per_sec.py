@@ -1,4 +1,6 @@
 import time
+from typing import Set, Any
+
 from edempy import Deck
 import numpy as np
 from edempy import BoxBin, CylinderBin
@@ -12,23 +14,10 @@ filepath = "C:\\Users\\Jakub\\PycharmProjects\\test2\\testownik11_prof_Robert_Kr
 deck = Deck(filepath)
 def ring_bin_all(time_step=50, deck_name=filepath):
 
-    #"simulation_0.dem"
-    start = time.time()
     deck = Deck(deck_name)
-
     A_boxbin = BoxBin([0, 0, 0.9], 3.6, 2, 1.8)
     B_cylinderbin = CylinderBin([0, -1, 0], [0, 1, 0], 1.8)
     C_cylinderbin = CylinderBin([0, -1, 0], [0, 1, 0], 1.5)
-
-
-    #nTimeSteps = deck.numTimesteps
-    #print("liczba krokow czasowych", nTimeSteps)
-    #test = deck.creatorData.particleNames
-    #print("nazwy czasteczek", test)
-    #particles = set()
-    #mass = []
-    #diameter = []
-    #sum_mass = 0
 
     """LUPEK"""
     ids_0 = deck.timestep[time_step].particle[0].getIds()
@@ -41,10 +30,6 @@ def ring_bin_all(time_step=50, deck_name=filepath):
     binned_ids_E0 = binned_ids_B0 - (binned_ids_A0 & binned_ids_B0)
     binned_ids_D0 = binned_ids_C0 - (binned_ids_A0 & binned_ids_C0)
     binned_ids_X0 = binned_ids_E0 - binned_ids_D0
-#    particles = particles | binned_ids_X0
-#    for i in binned_ids_X0:
-#        sum_mass += deck.timestep[time_step].particle[0].getMass(id=i)
-
 
     """PIASKOWIEC"""
     ids_1 = deck.timestep[time_step].particle[1].getIds()
@@ -57,11 +42,6 @@ def ring_bin_all(time_step=50, deck_name=filepath):
     binned_ids_E1 = binned_ids_B1 - (binned_ids_A1 & binned_ids_B1)
     binned_ids_D1 = binned_ids_C1 - (binned_ids_A1 & binned_ids_C1)
     binned_ids_X1 = binned_ids_E1 - binned_ids_D1
-#    particles = particles | binned_ids_X1
-
-#    for i in binned_ids_X1:
-#        sum_mass += deck.timestep[time_step].particle[1].getMass(id=i)
-
 
     """DOLOMIT"""
     ids_2 = deck.timestep[time_step].particle[2].getIds()
@@ -74,17 +54,10 @@ def ring_bin_all(time_step=50, deck_name=filepath):
     binned_ids_E2 = binned_ids_B2 - (binned_ids_A2 & binned_ids_B2)
     binned_ids_D2 = binned_ids_C2 - (binned_ids_A2 & binned_ids_C2)
     binned_ids_X2 = binned_ids_E2 - binned_ids_D2
-#    particles = particles | binned_ids_X2
-#    print(particles)
 
-#    for i in binned_ids_X2:
-#        sum_mass += deck.timestep[time_step].particle[2].getMass(id=i)
-
-    #print("masa calkowita", sum_mass)
-    koniec = time.time()
-    print("czas: ", koniec - start)
-
+    print(time_step, " \\ ", deck.numTimesteps)
     return binned_ids_X0, binned_ids_X1, binned_ids_X2
+
 
 def draw_graph(x, y, is_save=False, is_draw=True):
     fig = plt.figure(figsize=(7, 6))
@@ -103,26 +76,37 @@ def draw_graph(x, y, is_save=False, is_draw=True):
 
 
 def main(args):
+    start = time.time()
     mass_array = []     # y
     timestep_array = []     # x
-    for i in range(100, 261, 5):
-        ids_lup_current, ids_pias_current, ids_dol_current = ring_bin_all(time_step=i)
-        ids_lup_prior, ids_pias_prior, ids_dol_prior = ring_bin_all(time_step=i-1)
-        ids_lup = ids_lup_current - ids_lup_prior
-        ids_pias = ids_pias_current - ids_pias_prior
-        ids_dol = ids_dol_current - ids_dol_prior
-        mass = 0
-        for j in ids_lup:
-            mass += deck.timestep[i].particle[0].getMass(j)
-        for k in ids_pias:
-            mass += deck.timestep[i].particle[1].getMass(k)
-        for l in ids_dol:
-            mass += deck.timestep[i].particle[2].getMass(l)
-        timestep_array.append(round(float(deck.timestepKeys[i]), 2))
-        mass_array.append(round(mass,4))
+
+    for i in range(1, 261, 50):
+        try:
+            ids_lup_current, ids_pias_current, ids_dol_current = ring_bin_all(time_step=i)
+            ids_lup_prior, ids_pias_prior, ids_dol_prior = ring_bin_all(time_step=i-1)
+            ids_lup = ids_lup_current - ids_lup_prior
+            ids_pias = ids_pias_current - ids_pias_prior
+            ids_dol = ids_dol_current - ids_dol_prior
+            mass = 0
+            for j in ids_lup:
+                mass += deck.timestep[i].particle[0].getMass(j)
+            for k in ids_pias:
+                mass += deck.timestep[i].particle[1].getMass(k)
+            for l in ids_dol:
+                mass += deck.timestep[i].particle[2].getMass(l)
+            timestep_array.append(round(float(deck.timestepKeys[i]), 2))
+            mass_array.append(round(mass,4))
+        except Exception:
+            timestep_array.append(round(float(deck.timestepKeys[i]), 2))
+            mass_array.append(0)
+            continue
 
     print(mass_array)
     print(timestep_array)
+
+    koniec = time.time()
+    print("czas: ", koniec - start)
+
     draw_graph(timestep_array, mass_array)
 
 
